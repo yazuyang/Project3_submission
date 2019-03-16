@@ -13151,6 +13151,7 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="c1"># Visualizations will be shown in the notebook.</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
@@ -13171,7 +13172,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Load pickled data</span>
@@ -13228,7 +13229,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Replace each question mark with the appropriate value. </span>
@@ -13247,7 +13248,8 @@ div#notebook {
 <span class="n">image_shape</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
 <span class="c1"># TODO: How many unique classes/labels there are in the dataset.</span>
-<span class="n">n_classes</span> <span class="o">=</span> <span class="mi">43</span> <span class="c1">#from signnames.csv</span>
+<span class="n">df_classes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;signnames.csv&#39;</span><span class="p">)</span>
+<span class="n">n_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_classes</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="c1">#from signnames.csv</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of training examples =&quot;</span><span class="p">,</span> <span class="n">n_train</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of testing examples =&quot;</span><span class="p">,</span> <span class="n">n_test</span><span class="p">)</span>
@@ -13631,8 +13633,6 @@ Number of classes = 43
     <span class="n">conv1_W</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">mean</span> <span class="o">=</span> <span class="n">mu</span><span class="p">,</span> <span class="n">stddev</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">))</span>
     <span class="n">conv1_b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">12</span><span class="p">))</span>
     <span class="n">conv1</span>   <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">conv1_W</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;VALID&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">conv1_b</span>
-    
-    <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="s1">&#39;conv1_W&#39;</span><span class="p">,</span> <span class="n">conv1_W</span><span class="p">)</span>
 
     <span class="c1"># SOLUTION: Activation.</span>
     <span class="n">conv1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">conv1</span><span class="p">)</span>
@@ -13644,8 +13644,6 @@ Number of classes = 43
     <span class="n">conv2_W</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="n">mean</span> <span class="o">=</span> <span class="n">mu</span><span class="p">,</span> <span class="n">stddev</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">))</span>
     <span class="n">conv2_b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">24</span><span class="p">))</span>
     <span class="n">conv2</span>   <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">conv1</span><span class="p">,</span> <span class="n">conv2_W</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;VALID&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">conv2_b</span>
-    
-    <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="s1">&#39;conv2_W&#39;</span><span class="p">,</span> <span class="n">conv2_W</span><span class="p">)</span>
     
     <span class="c1"># SOLUTION: Activation.</span>
     <span class="n">conv2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">conv2</span><span class="p">)</span>
@@ -13661,8 +13659,6 @@ Number of classes = 43
     <span class="n">fc1_b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">400</span><span class="p">))</span>
     <span class="n">fc1</span>   <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">fc0</span><span class="p">,</span> <span class="n">fc1_W</span><span class="p">)</span> <span class="o">+</span> <span class="n">fc1_b</span>
     
-    <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="s1">&#39;fc1_W&#39;</span><span class="p">,</span> <span class="n">fc1_W</span><span class="p">)</span>
-    
     <span class="c1"># SOLUTION: Activation.</span>
     <span class="n">fc1</span>    <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">fc1</span><span class="p">)</span>
     
@@ -13673,8 +13669,6 @@ Number of classes = 43
     <span class="n">fc2_b</span>  <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
     <span class="n">fc2</span>    <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">fc1</span><span class="p">,</span> <span class="n">fc2_W</span><span class="p">)</span> <span class="o">+</span> <span class="n">fc2_b</span>
     
-    <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="s1">&#39;fc2_W&#39;</span><span class="p">,</span> <span class="n">fc2_W</span><span class="p">)</span>
-    
     <span class="c1"># SOLUTION: Activation.</span>
     <span class="n">fc2</span>    <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">fc2</span><span class="p">)</span>
     
@@ -13684,8 +13678,6 @@ Number of classes = 43
     <span class="n">fc3_W</span>  <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">),</span> <span class="n">mean</span> <span class="o">=</span> <span class="n">mu</span><span class="p">,</span> <span class="n">stddev</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">))</span>
     <span class="n">fc3_b</span>  <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_classes</span><span class="p">))</span>
     <span class="n">logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">fc2</span><span class="p">,</span> <span class="n">fc3_W</span><span class="p">)</span> <span class="o">+</span> <span class="n">fc3_b</span>
-    
-    <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="s1">&#39;fc3_W&#39;</span><span class="p">,</span> <span class="n">fc3_W</span><span class="p">)</span>
     
     <span class="n">logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">)</span>
     
@@ -14692,7 +14684,7 @@ my_top_K ID:
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[51]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Visualize your network&#39;s feature maps here.</span>
@@ -14703,7 +14695,7 @@ my_top_K ID:
 <span class="c1"># activation_min/max: can be used to view the activation contrast in more detail, by default matplot sets min and max to the actual min and max values of the output</span>
 <span class="c1"># plt_num: used to plot out multiple different weight feature map sets on the same block, just extend the plt number for each new feature map entry</span>
 
-<span class="k">def</span> <span class="nf">outputFeatureMap</span><span class="p">(</span><span class="n">image_input</span><span class="p">,</span> <span class="n">tf_activation</span><span class="p">,</span> <span class="n">activation_min</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation_max</span><span class="o">=-</span><span class="mi">1</span> <span class="p">,</span><span class="n">plt_num</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">outputFeatureMap</span><span class="p">(</span><span class="n">image_input</span><span class="p">,</span> <span class="n">tf_activation</span><span class="p">,</span> <span class="n">activation_min</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation_max</span><span class="o">=-</span><span class="mi">1</span> <span class="p">,</span><span class="n">plt_num</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
     <span class="c1"># Here make sure to preprocess your image_input in a way your network expects</span>
     <span class="c1"># with size, normalization, ect if needed</span>
     <span class="c1"># image_input =</span>
@@ -14723,6 +14715,71 @@ my_top_K ID:
             <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">activation</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:,</span> <span class="n">featuremap</span><span class="p">],</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">activation_min</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">activation</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:,</span> <span class="n">featuremap</span><span class="p">],</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">())</span>
+    <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="s2">&quot;./lenet&quot;</span><span class="p">)</span>
+
+    <span class="n">outputFeatureMap</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>INFO:tensorflow:Restoring parameters from ./lenet
+(12630, 32, 32, 1)
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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3ASoYqZ1U4pXkRhXUfjpp59G+sMPm1adb7zxBgAvvfRSLFuzZk2kt21Lu7QFUX/44YfHspNOOinShxxySKRHjBgR6cGDM9/IIstekaKn751SWsOUU6/Ir0Z8SVExvqToNq1eNV0VzwEq2lTrTZk/VSNXevny5ZF++OGHI/3UU01e0p999lmLZyit/UytkTds2BDpRx55JNJDhgyJ9NFHN21hXHrppQAcdNBByecV0fo9wjSjU0G96/dYv121K/zZoGJ8SdFwrT5opKrVBuNE0b57ylQKTdqtitsnnngi0irew7YlpKcW7Y9OJ0XGlVBHNWztv/bprrvuivT7778PwDnnnBPLzjjjjEjrFFE0xaUQpoJ6HWuqEV9SVIwvKRqu1QdRpFpoyv2pyJChCGJTRfrChQsj/cknqRC05m2PG5e5FEyZMiWWHXDAAZHed999I62adTDyvPPOO7Hs7bebopk2btwYaX3XF154AWjuoaNGogsuuCDSwdgDxcacgLamy1pUI76kaLhyl1KWwgisZy398cdN0cOPP/44AA899FAs05GWck0CmDVrVqSPO+44APbff/9YpgpW0QgKZmTt55tvNrkjLFiwINL3339/pINiuXr16lh27733Rlp3+84999xIp3wIFNU6vkJdqBhfUjRU1JtZFJEphwktUxGrjhFLl8bcQjz22GNA8902FXnHHHNMpM8///xIT58+PdJ77ZUlmUiJz9YQ1u/qbqVesWqSnTZtWqRvuukmAD766KNYtmrVqkir2Nfp6cADD4x0+IZqQwh0lyl3ZnabmW00szekbJiZLTKzlfn/Q1tro0LPQz2ifi5ZDhfFlcBjeaqQx/K/K/QitCnq3f1JM9u/pvgHwMycngcsAX7RVltmFrVTda4Ior4okias1wEWL14c6bCW1vtUPKp4V7G/5557Rjrcq1qzPlv7mfJ702er6FXtfPbs2dTi+uuvj7Su6VXs33PPPZG+/PLLIz1y5MgW/WlPyBZ0XLnb1903AOT/79NG/Qo9DLtcqzezy8zsRTN7sciSVqHx6KhW/7GZjXL3DWY2iizTZBIaOzd16tQYO5eKgVNxpWbJ119vSmGnRpJQR40vutM1Y8aMSLcVOasOHCpCi3bfgtGpKGhDpwB99oknZvkN1dSru3dbt26N9LPPPhtpNTqlViLh2+1qk+19NOVcuxhY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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
     </div>

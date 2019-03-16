@@ -108,9 +108,14 @@ These image are distorted due to resizing or inclination, or the margin may be l
 #### 2. Result of predictions.
 
 Only two images were recognized correctly, sign id were 3 and 9.
-
+That is, the correct answer rate obtained was 40%.
 
 #### 3. Discussion
+
+Althoug the accuracy of my trained model on the test set divided from prepared dataset was over 90%, the accuracy on the images downloaded from web was only 40%.
+However, because the prepared data set was appropriately divided into tarining, validation, and test, it can be considered that it is not just an overlearning problem.
+This accuracy reduction is considered to indicate the need for further advanced preprocessing of the input image.
+
 
 The top 5 softmax outputs in each input are shown below.
 
